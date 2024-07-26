@@ -1,10 +1,10 @@
-import { npcGenGPTSettings } from "./module/settings.js";
-import { npcGenGPTGenerateNPC } from "./module/generateNPC.js";
-import { npcGenGPTEnhanceNPC } from "./module/enhanceNPC.js";
+import { npcGenBYOLLMSettings } from "./module/settings.js";
+import { npcGenBYOLLMGenerateNPC } from "./module/generateNPC.js";
+import { npcGenBYOLLMEnhanceNPC } from "./module/enhanceNPC.js";
 
 Hooks.once('ready', () => {
     console.log("NPC Generator (GPT) | Initializing Settings")
-    new npcGenGPTSettings();
+    new npcGenBYOLLMSettings();
 });
 
 Hooks.on("renderActorDirectory", async (app, html) => {
@@ -12,7 +12,7 @@ Hooks.on("renderActorDirectory", async (app, html) => {
         let button = $(`<button class='npc-generator-byo-llm'><i class='fas fa-address-card'></i> ${game.i18n.localize("npc-generator-byo-llm.button")}</button>`)
 
         button.click(function () {
-            new npcGenGPTGenerateNPC().render(true)
+            new npcGenBYOLLMGenerateNPC().render(true)
         });
 
         html.find(".directory-header .header-actions").append(button);
@@ -25,7 +25,7 @@ Hooks.on("getActorSheetHeaderButtons", async (app, buttons) => {
             label: 'NGG',
             class: 'npc-generator-byo-llm',
             icon: 'fa-light fa-atom',
-            onclick: ev => { new npcGenGPTEnhanceNPC(app.object).render(true) }
+            onclick: ev => { new npcGenBYOLLMEnhanceNPC(app.object).render(true) }
         });
     }
 });

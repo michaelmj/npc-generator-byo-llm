@@ -1,7 +1,7 @@
-import { CONSTANTS, isRequesting, npcGenGPTLib } from "./lib.js";
-import { npcGenGPTDataStructure } from "./dataStructures.js";
+import { CONSTANTS, isRequesting, npcGenBYOLLMLib } from "./lib.js";
+import { npcGenBYOLLMDataStructure } from "./dataStructures.js";
 
-export class npcGenGPTEnhanceNPC extends Application {
+export class npcGenBYOLLMEnhanceNPC extends Application {
     constructor(npc) {
         super();
         this.npc = npc;
@@ -20,7 +20,7 @@ export class npcGenGPTEnhanceNPC extends Application {
 
     async getData(options) {
         const data = await super.getData(options);
-        data.selectOptions = npcGenGPTLib.getDialogOptions('cr', true)
+        data.selectOptions = npcGenBYOLLMLib.getDialogOptions('cr', true)
           .filter(obj => obj.value !== "random") 
           .map(obj => {
             if (obj.value === this.npc.system.details.cr) {
@@ -33,7 +33,7 @@ export class npcGenGPTEnhanceNPC extends Application {
 
     activateListeners(html) {
         super.activateListeners(html);
-        html.find('#npcGenGPT_enhance-btn').click(this.initEnhancing.bind(this));
+        html.find('#npcGenBYOLLM_enhance-btn').click(this.initEnhancing.bind(this));
     }
 
     async initEnhancing() {
@@ -42,14 +42,14 @@ export class npcGenGPTEnhanceNPC extends Application {
             return;
         }
 
-        const button = this.element.find('#npcGenGPT_enhance-btn');
+        const button = this.element.find('#npcGenBYOLLM_enhance-btn');
         button.text(game.i18n.localize("npc-generator-byo-llm.dialog.buttonPending"));
 
         const isBackgroundChecked = this.element.find('#background').prop('checked');
         const selectedCR = this.element.find('#cr').val();
 
         if (isBackgroundChecked) {
-            this.data.gptData = await npcGenGPTLib.callAI(this.initBackgroundNPC());
+            this.data.gptData = await npcGenBYOLLMLib.callAI(this.initBackgroundNPC());
         }
 
         if (selectedCR != this.npc.system.details.cr) {
@@ -65,7 +65,7 @@ export class npcGenGPTEnhanceNPC extends Application {
         const type = npc.system.details.type;
         const race = type.value === 'custom' ? type.custom : type.subtype ? `${type.value} (${type.subtype})` : type.value;
         const options = `${npc.name}, ${race}, ${npc.system.details.alignment}`;
-        return npcGenGPTDataStructure.getEnhanceQueryTemplate(options);
+        return npcGenBYOLLMDataStructure.getEnhanceQueryTemplate(options);
     }
 
     initEnhanceNPC(npcCR) {
@@ -73,7 +73,7 @@ export class npcGenGPTEnhanceNPC extends Application {
         return {
             abilities: npcAbilities,
             attributes: this.getNpcAttributes(npcCR, npcAbilities.con.value),
-            currency: npcGenGPTLib.getNpcCurrency(npcCR),
+            currency: npcGenBYOLLMLib.getNpcCurrency(npcCR),
             details: this.getNpcDetails(npcCR)
         }
     }
@@ -82,7 +82,7 @@ export class npcGenGPTEnhanceNPC extends Application {
         try {
             const npcData = (this.data.npcData) ? this.data.npcData : { details: { biography: {} } };
             if (this.data.gptData) {
-                npcData.details.biography.value = await npcGenGPTLib.getTemplateStructure(CONSTANTS.TEMPLATE.ENHANCESHEET, this.data.gptData);
+                npcData.details.biography.value = await npcGenBYOLLMLib.getTemplateStructure(CONSTANTS.TEMPLATE.ENHANCESHEET, this.data.gptData);
             }
 
             await this.npc.update({ system: npcData });
@@ -96,16 +96,16 @@ export class npcGenGPTEnhanceNPC extends Application {
     }
 
     getNpcAbilities(npcCR) {
-        const profAbilities = npcGenGPTLib.getProficentAbilities(this.npc.system.abilities);
-        const npcAbilities = npcGenGPTLib.getNpcAbilities(profAbilities);
-        return npcGenGPTLib.scaleAbilities(npcAbilities, npcCR)
+        const profAbilities = npcGenBYOLLMLib.getProficentAbilities(this.npc.system.abilities);
+        const npcAbilities = npcGenBYOLLMLib.getNpcAbilities(profAbilities);
+        return npcGenBYOLLMLib.scaleAbilities(npcAbilities, npcCR)
     }
 
     getNpcAttributes(npcCR, npcCon) {
-        const npcHp = npcGenGPTLib.getNpcHp(npcCR, npcCon, this.npc.system.traits.size); 
+        const npcHp = npcGenBYOLLMLib.getNpcHp(npcCR, npcCon, this.npc.system.traits.size); 
         return {
             hp: { value: npcHp.value, max: npcHp.value, formula: npcHp.formula },
-            ac: { value: npcGenGPTLib.getNpcAC(npcCR) }
+            ac: { value: npcGenBYOLLMLib.getNpcAC(npcCR) }
         }
     }
 

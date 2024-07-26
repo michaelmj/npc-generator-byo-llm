@@ -1,6 +1,6 @@
 import { CONSTANTS } from "./lib.js";
 
-export class npcGenGPTSettings {
+export class npcGenBYOLLMSettings {
 	constructor() {
 		this._initSettings();
 	}

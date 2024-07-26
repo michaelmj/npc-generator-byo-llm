@@ -1,4 +1,4 @@
-export class npcGenGPTDataStructure {
+export class npcGenBYOLLMDataStructure {
     static categoryList = ['type', 'gender', 'race', 'subtype', 'alignment', 'cr'];
     static typeList = ['commoner', 'npc'];
     static genderList = ['male', 'female'];

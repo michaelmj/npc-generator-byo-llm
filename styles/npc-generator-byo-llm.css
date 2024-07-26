@@ -5,28 +5,28 @@
     background: #444654;
     border-radius: 0 0 5px 5px;
 }
-.npcGenGPT {
+.npcGenBYOLLM {
     margin-top: 5px;
     font-family: Söhne,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif,Helvetica Neue,Arial,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;
 }
-.npcGenGPT ::-webkit-scrollbar-thumb {
+.npcGenBYOLLM ::-webkit-scrollbar-thumb {
     background: teal;
     border-radius: 0px;
     border-color: rgb(0, 192, 192);
 }
-.npcGenGPT div {
+.npcGenBYOLLM div {
     height: 30px;
     line-height: 30px;
     margin-bottom: 10px;
     margin-left: 5px;
 }
-.npcGenGPT label {
+.npcGenBYOLLM label {
     float: left;
     width: 45%;
     height: 100%;
     color: #fff;
 }
-.npcGenGPT input {
+.npcGenBYOLLM input {
     float: right;
     padding: 0 5px;
     width: 55%;
@@ -34,8 +34,8 @@
     border: 1px solid #565869;
     color: #d1d5db;
 }
-.npcGenGPT input:focus { box-shadow: none; }
-.npcGenGPT select { 
+.npcGenBYOLLM input:focus { box-shadow: none; }
+.npcGenBYOLLM select { 
     float: right;
     width: 55%;
     height: 100%;
@@ -45,25 +45,25 @@
     color: #d1d5db;
     cursor: pointer;
 }
-.npcGenGPT select:focus { box-shadow: none; }
-.npcGenGPT option {
+.npcGenBYOLLM select:focus { box-shadow: none; }
+.npcGenBYOLLM option {
     background-color: #343541;
     margin-bottom: 3px;
 }
-.npcGenGPT input[type="checkbox"] { 
+.npcGenBYOLLM input[type="checkbox"] { 
     float: right;
     height: 100%;
     cursor: pointer;
 }
-.npcGenGPT button {
+.npcGenBYOLLM button {
     margin-top: 5px;
     background-color: #343541;
     color: #fff;
     border: 1px solid #565869;
     transition: background-color 0.2s;
 }
-.npcGenGPT button:hover {
+.npcGenBYOLLM button:hover {
     background: rgba(0, 128, 128, 0.5);
     box-shadow: none;
 }
-.npcGenGPT button:focus { box-shadow: none; }
+.npcGenBYOLLM button:focus { box-shadow: none; }

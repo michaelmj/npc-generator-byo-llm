@@ -1,4 +1,4 @@
-import { npcGenGPTDataStructure } from "./dataStructures.js"
+import { npcGenBYOLLMDataStructure } from "./dataStructures.js"
 import { Fuse } from "../lib/fuse.mjs"
 
 export const CONSTANTS = {
@@ -15,7 +15,7 @@ export const CONSTANTS = {
 
 export var isRequesting = false;
 
-export class npcGenGPTLib {
+export class npcGenBYOLLMLib {
 
     static async callAI(content) {
         isRequesting = true;
@@ -103,13 +103,13 @@ export class npcGenGPTLib {
     }
 
     static getDialogCategories() {
-        return npcGenGPTDataStructure.categoryList.map(category => {
+        return npcGenBYOLLMDataStructure.categoryList.map(category => {
             return { value: category, label: `npc-generator-byo-llm.dialog.${category}.label` }
         });
     }
 
     static getDialogOptions(category, random) {
-        const list = npcGenGPTDataStructure[category + 'List'];
+        const list = npcGenBYOLLMDataStructure[category + 'List'];
         const localize = (cat, val) => `npc-generator-byo-llm.dialog.${cat}.${val}`;
         const options = (typeof list === 'function' ? list(random) : list).map(value => ({
             value,
@@ -206,7 +206,7 @@ export class npcGenGPTLib {
 
     static getNpcCurrency(npcCR) {
         const mult = (npcCR < 1) ? 10 : (npcCR * 100);
-        let coins = npcGenGPTLib.rollDice(mult, 10);
+        let coins = npcGenBYOLLMLib.rollDice(mult, 10);
 
         return {
             pp: Math.floor(coins / 1000),
@@ -219,7 +219,7 @@ export class npcGenGPTLib {
 
     static getNpcHp(npcCR, npcCon, npcSize) {
         const avgHp = this.getAverageHP(npcCR);
-        const sizeDice = npcGenGPTDataStructure.hpDice[npcSize];
+        const sizeDice = npcGenBYOLLMDataStructure.hpDice[npcSize];
         const npcConMod = this.getAbilityMod(npcCon);
         const npcHpFormula = this.getHpDicesFormula(avgHp, sizeDice, npcConMod);
         let curHp = this.rollFormula(npcHpFormula);
@@ -265,7 +265,7 @@ export class npcGenGPTLib {
         const npcAbilities = {};
         for (const ability of abilities) {
             npcAbilities[ability] = {
-                value: npcGenGPTLib.roll4d6DropLowest(),
+                value: npcGenBYOLLMLib.roll4d6DropLowest(),
                 proficient: profAbilities.includes(ability) ? 1 : 0
             };
         }
@@ -305,7 +305,7 @@ export class npcGenGPTLib {
     }
 
     static getSkillAbility(npcSkill) {
-        const skillAbilities = npcGenGPTDataStructure.skillAbilities;
+        const skillAbilities = npcGenBYOLLMDataStructure.skillAbilities;
         for (const key in skillAbilities) {
             if (skillAbilities[key].includes(npcSkill)) return key
         }
