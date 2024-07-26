@@ -4,7 +4,7 @@ import { Fuse } from "../lib/fuse.mjs"
 export const CONSTANTS = {
     MODULE_ID: "npc-generator-byo-llm",
     LOG_PREFIX: "NPC Generator (GPT) |",
-    API_URL: '${game.settings.get(CONSTANTS.MODULE_ID, "apiURL")}', //"https://api.openai.com/v1/chat/completions",
+    API_URL: game.settings.get(CONSTANTS.MODULE_ID, "apiURL"), //"https://api.openai.com/v1/chat/completions",
     TEMPLATE: {
         DIALOG: 'generate.hbs',
         ENHANCE: 'enhance.hbs',
@@ -50,7 +50,7 @@ export class npcGenBYOLLMLib {
         return {
             method: "POST",
             body: JSON.stringify({
-                "model": '${game.settings.get(CONSTANTS.MODULE_ID, "model")}',
+                "model": game.settings.get(CONSTANTS.MODULE_ID, "model"),
                 "messages": [
                     {
                         "role": "user",
