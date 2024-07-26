@@ -55,9 +55,25 @@ export class npcGenBYOLLMSettings {
 				step: 0.1,
 			}
 		});
+		game.settings.register(CONSTANTS.MODULE_ID, "apiURL", {
+			name: game.i18n.localize("npc-generator-byo-llm.settings.apiURL.name"),
+			hint: game.i18n.localize("npc-generator-byo-llm.settings.apiURL.hint"),
+			scope: "client",
+			config: true,
+			default: '',
+			type: String
+		});
 		game.settings.register(CONSTANTS.MODULE_ID, "apiKey", {
 			name: game.i18n.localize("npc-generator-byo-llm.settings.apiKey.name"),
 			hint: game.i18n.localize("npc-generator-byo-llm.settings.apiKey.hint"),
+			scope: "client",
+			config: true,
+			default: '',
+			type: String
+		});
+		game.settings.register(CONSTANTS.MODULE_ID, "model", {
+			name: game.i18n.localize("npc-generator-byo-llm.settings.model.name"),
+			hint: game.i18n.localize("npc-generator-byo-llm.settings.model.hint"),
 			scope: "client",
 			config: true,
 			default: '',
