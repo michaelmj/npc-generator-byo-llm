@@ -1,8 +1,8 @@
 import { npcGenGPTDataStructure } from "./dataStructures.js"
 import { Fuse } from "../lib/fuse.mjs"
 
-export const COSTANTS = {
-    MODULE_ID: "npc-generator-gpt",
+export const CONSTANTS = {
+    MODULE_ID: "npc-generator-byo-llm",
     LOG_PREFIX: "NPC Generator (GPT) |",
     API_URL: "https://api.openai.com/v1/chat/completions",
     TEMPLATE: {
@@ -22,18 +22,18 @@ export class npcGenGPTLib {
 
         const requestConfig = this.getRequestConfig(content);
 
-        console.log(`${COSTANTS.LOG_PREFIX} Sending Request`);
+        console.log(`${CONSTANTS.LOG_PREFIX} Sending Request`);
 
         try {
-            const response = await fetch(COSTANTS.API_URL, requestConfig);
+            const response = await fetch(CONSTANTS.API_URL, requestConfig);
             const responseData = await response.json();
 
             if (!response.ok) {
                 const errorMsg = (typeof responseData.error.message === 'string') ? responseData.error.message : responseData.error.message.message;
                 if (response.status == 429) 
-                    ui.notifications.error(`${COSTANTS.LOG_PREFIX} ${game.i18n.localize("npc-generator-gpt.status.error4")}`);
+                    ui.notifications.error(`${CONSTANTS.LOG_PREFIX} ${game.i18n.localize("npc-generator-byo-llm.status.error4")}`);
                 else
-                    ui.notifications.error(`${COSTANTS.LOG_PREFIX} ${game.i18n.localize("npc-generator-gpt.status.error")}`);
+                    ui.notifications.error(`${CONSTANTS.LOG_PREFIX} ${game.i18n.localize("npc-generator-byo-llm.status.error")}`);
                 throw new Error(`${response.status} | Message: ${errorMsg}`);
             }
 
@@ -57,15 +57,15 @@ export class npcGenGPTLib {
                         "content": content
                     }
                 ],
-                "temperature": game.settings.get(COSTANTS.MODULE_ID, "temperature"),
-                "top_p": game.settings.get(COSTANTS.MODULE_ID, "top_p"),
-                "frequency_penalty": game.settings.get(COSTANTS.MODULE_ID, "freq_penality"),
-                "presence_penalty": game.settings.get(COSTANTS.MODULE_ID, "pres_penality")
+                "temperature": game.settings.get(CONSTANTS.MODULE_ID, "temperature"),
+                "top_p": game.settings.get(CONSTANTS.MODULE_ID, "top_p"),
+                "frequency_penalty": game.settings.get(CONSTANTS.MODULE_ID, "freq_penality"),
+                "presence_penalty": game.settings.get(CONSTANTS.MODULE_ID, "pres_penality")
             }),
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${game.settings.get(COSTANTS.MODULE_ID, "apiKey")}`
+                'Authorization': `Bearer ${game.settings.get(CONSTANTS.MODULE_ID, "apiKey")}`
             }
         };
     }
@@ -74,7 +74,7 @@ export class npcGenGPTLib {
         const gptContent = content.choices[0].message.content;
         const regex = /```json([\s\S]*?)```/;
         const match = regex.exec(gptContent);
-        const errorMsg = `${COSTANTS.LOG_PREFIX} ${game.i18n.localize("npc-generator-gpt.status.error2")}`;
+        const errorMsg = `${CONSTANTS.LOG_PREFIX} ${game.i18n.localize("npc-generator-byo-llm.status.error2")}`;
 
         if (match) {
             const jsonString = match[1].trim();
@@ -99,24 +99,24 @@ export class npcGenGPTLib {
     static logGptDataCost(gptData) {
         const inputCost = 0.001 / (1000 / gptData.usage.prompt_tokens);
         const outputCost = 0.002 / (1000 / gptData.usage.completion_tokens);
-        console.warn(COSTANTS.LOG_PREFIX, 'API call cost:', `$${inputCost + outputCost}`);
+        console.warn(CONSTANTS.LOG_PREFIX, 'API call cost:', `$${inputCost + outputCost}`);
     }
 
     static getDialogCategories() {
         return npcGenGPTDataStructure.categoryList.map(category => {
-            return { value: category, label: `npc-generator-gpt.dialog.${category}.label` }
+            return { value: category, label: `npc-generator-byo-llm.dialog.${category}.label` }
         });
     }
 
     static getDialogOptions(category, random) {
         const list = npcGenGPTDataStructure[category + 'List'];
-        const localize = (cat, val) => `npc-generator-gpt.dialog.${cat}.${val}`;
+        const localize = (cat, val) => `npc-generator-byo-llm.dialog.${cat}.${val}`;
         const options = (typeof list === 'function' ? list(random) : list).map(value => ({
             value,
             label: category === 'cr' ? (Number.isInteger(value) ? value : this.floatToFraction(value)) : localize(category, value),
             translate: typeof value === 'string'
         }));
-        if (random) options.unshift({ value: 'random', label: 'npc-generator-gpt.dialog.random', translate: true });
+        if (random) options.unshift({ value: 'random', label: 'npc-generator-byo-llm.dialog.random', translate: true });
         return options;
     }
 
@@ -138,7 +138,7 @@ export class npcGenGPTLib {
 
     static async getTemplateStructure(template, data) {
         try {
-            const path = `modules/${COSTANTS.MODULE_ID}/templates/${template}`;
+            const path = `modules/${CONSTANTS.MODULE_ID}/templates/${template}`;
             const renderedTemplate = await renderTemplate(path, data);
             return renderedTemplate
         } catch (error) { console.error(error) }
@@ -146,8 +146,8 @@ export class npcGenGPTLib {
 
     static getSettingsPacks() {
         return {
-            items: game.settings.get(COSTANTS.MODULE_ID, "itemsComp"),
-            spells: game.settings.get(COSTANTS.MODULE_ID, "spellsComp")
+            items: game.settings.get(CONSTANTS.MODULE_ID, "itemsComp"),
+            spells: game.settings.get(CONSTANTS.MODULE_ID, "spellsComp")
         }
     }
 
@@ -170,7 +170,7 @@ export class npcGenGPTLib {
     }
 
     static fuzzySearch(query, array, keys) {
-        const threshold = game.settings.get(COSTANTS.MODULE_ID, "fuzzyThreshold");
+        const threshold = game.settings.get(CONSTANTS.MODULE_ID, "fuzzyThreshold");
         const fuse = new Fuse(array, { keys: keys, threshold: threshold });
         return fuse.search(query)
     }

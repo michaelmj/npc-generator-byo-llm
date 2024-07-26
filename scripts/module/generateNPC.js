@@ -1,4 +1,4 @@
-import { COSTANTS, isRequesting, npcGenGPTLib } from "./lib.js";
+import { CONSTANTS, isRequesting, npcGenGPTLib } from "./lib.js";
 import { npcGenGPTDataStructure } from "./dataStructures.js";
 
 export class npcGenGPTGenerateNPC extends Application {
@@ -9,9 +9,9 @@ export class npcGenGPTGenerateNPC extends Application {
 
     static get defaultOptions() {
         return mergeObject(super.defaultOptions, {
-            id: COSTANTS.MODULE_ID,
-            title: game.i18n.localize("npc-generator-gpt.dialog.title"),
-            template: `modules/${COSTANTS.MODULE_ID}/templates/${COSTANTS.TEMPLATE.DIALOG}`,
+            id: CONSTANTS.MODULE_ID,
+            title: game.i18n.localize("npc-generator-byo-llm.dialog.title"),
+            template: `modules/${CONSTANTS.MODULE_ID}/templates/${CONSTANTS.TEMPLATE.DIALOG}`,
             width: 300,
             height: 370
         });
@@ -41,7 +41,7 @@ export class npcGenGPTGenerateNPC extends Application {
                 return `<option value="${subtype.value}">${subtype.label}</option>`;
             }).join('');
         };
-        const label = game.i18n.localize(`npc-generator-gpt.dialog.subtype.${((npcType === 'npc') ? 'class' : 'label')}`);
+        const label = game.i18n.localize(`npc-generator-byo-llm.dialog.subtype.${((npcType === 'npc') ? 'class' : 'label')}`);
         this.element.find("label[for='subtype']").text(`${label}:`);
         this.element.find("#subtype").html(generateOptions(npcType, true));
         this.element.find("#cr").html(generateOptions('cr', npcType === 'npc'));
@@ -49,18 +49,18 @@ export class npcGenGPTGenerateNPC extends Application {
 
     async initGeneration() {
         if (isRequesting) {
-            ui.notifications.warn(`${COSTANTS.LOG_PREFIX} ${game.i18n.localize("npc-generator-gpt.status.wait")}`);
+            ui.notifications.warn(`${CONSTANTS.LOG_PREFIX} ${game.i18n.localize("npc-generator-byo-llm.status.wait")}`);
             return;
         }
 
         this.generateDialogData();
 
         const button = this.element.find('#npcGenGPT_create-btn');
-        button.text(game.i18n.localize("npc-generator-gpt.dialog.buttonPending"));
+        button.text(game.i18n.localize("npc-generator-byo-llm.dialog.buttonPending"));
 
         const responseData = await npcGenGPTLib.callAI(this.initQuery());
 
-        button.text(game.i18n.localize("npc-generator-gpt.dialog.button"));
+        button.text(game.i18n.localize("npc-generator-byo-llm.dialog.button"));
 
         if (responseData) {
             this.mergeGptData(responseData);
@@ -77,7 +77,7 @@ export class npcGenGPTGenerateNPC extends Application {
         const { cr, race, type, subtype } = this.data.details;
         subtype.value = (type.value === 'commoner') ? type.value : subtype.value;
         this.data.details.optionalName = this.element.find('#name').val();
-        this.data.details.sheet = (type.value === 'commoner') ? 'npc-generator-gpt.dialog.subtype.label' : 'npc-generator-gpt.dialog.subtype.class';
+        this.data.details.sheet = (type.value === 'commoner') ? 'npc-generator-byo-llm.dialog.subtype.label' : 'npc-generator-byo-llm.dialog.subtype.class';
         this.data.abilities = this.generateNpcAbilities(subtype.value, cr.value);
         this.data.attributes = this.generateNpcAttributes(race.value, subtype.value, cr.value);
         this.data.skills = this.generateNpcSkills(race.value, subtype.value);
@@ -88,7 +88,7 @@ export class npcGenGPTGenerateNPC extends Application {
     initQuery() {
         const { optionalName, gender, race, subtype, alignment } = this.data.details;
         let options = `${gender.label}, ${race.label}, ${subtype.label}, ${alignment.label}`;
-        if (optionalName) options = `(${game.i18n.localize("npc-generator-gpt.query.name")}: ${optionalName}) ${options}`; 
+        if (optionalName) options = `(${game.i18n.localize("npc-generator-byo-llm.query.name")}: ${optionalName}) ${options}`; 
         return npcGenGPTDataStructure.getGenerateQueryTemplate(options)
     }
 
@@ -112,8 +112,8 @@ export class npcGenGPTGenerateNPC extends Application {
     async createNPC() {
         try {
             const { abilities, attributes, details, name, skills, traits, currency } = this.data;
-            const fakeAlign = (game.settings.get(COSTANTS.MODULE_ID, "hideAlignment")) ? game.i18n.localize("npc-generator-gpt.sheet.unknown") : details.alignment.label;
-            const bioContent = await npcGenGPTLib.getTemplateStructure(COSTANTS.TEMPLATE.SHEET, this.data);
+            const fakeAlign = (game.settings.get(CONSTANTS.MODULE_ID, "hideAlignment")) ? game.i18n.localize("npc-generator-byo-llm.sheet.unknown") : details.alignment.label;
+            const bioContent = await npcGenGPTLib.getTemplateStructure(CONSTANTS.TEMPLATE.SHEET, this.data);
 
             const npc = await Actor.create({ name: name, type: "npc" });
             await npc.update({
@@ -147,10 +147,10 @@ export class npcGenGPTGenerateNPC extends Application {
             npc.sheet.render(true);
 
             this.close();
-            ui.notifications.info(`${COSTANTS.LOG_PREFIX} ${game.i18n.format("npc-generator-gpt.status.done", { npcName: name })}`);
+            ui.notifications.info(`${CONSTANTS.LOG_PREFIX} ${game.i18n.format("npc-generator-byo-llm.status.done", { npcName: name })}`);
         } catch (error) {
-            console.error(`${COSTANTS.LOG_PREFIX} Error during NPC creation:`, error);
-            ui.notifications.error(`${COSTANTS.LOG_PREFIX} ${game.i18n.localize("npc-generator-gpt.status.error3")}`);
+            console.error(`${CONSTANTS.LOG_PREFIX} Error during NPC creation:`, error);
+            ui.notifications.error(`${CONSTANTS.LOG_PREFIX} ${game.i18n.localize("npc-generator-byo-llm.status.error3")}`);
         }
     }
 
@@ -166,7 +166,7 @@ export class npcGenGPTGenerateNPC extends Application {
     generateNpcAttributes(npcRace, npcSubtype, npcCR) {
         const raceData = npcGenGPTDataStructure.raceData[npcRace];
         const subtypeData = npcGenGPTDataStructure.subtypeData[npcSubtype];
-        const measureUnits = game.settings.get(COSTANTS.MODULE_ID, "movementUnits") ? 'm' : 'ft';
+        const measureUnits = game.settings.get(CONSTANTS.MODULE_ID, "movementUnits") ? 'm' : 'ft';
         return {
             hp: npcGenGPTLib.getNpcHp(npcCR, this.data.abilities.con.value, raceData.size),
             ac: npcGenGPTLib.getNpcAC(npcCR),

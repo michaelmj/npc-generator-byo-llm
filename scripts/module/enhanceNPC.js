@@ -1,4 +1,4 @@
-import { COSTANTS, isRequesting, npcGenGPTLib } from "./lib.js";
+import { CONSTANTS, isRequesting, npcGenGPTLib } from "./lib.js";
 import { npcGenGPTDataStructure } from "./dataStructures.js";
 
 export class npcGenGPTEnhanceNPC extends Application {
@@ -10,9 +10,9 @@ export class npcGenGPTEnhanceNPC extends Application {
 
     static get defaultOptions() {
         return mergeObject(super.defaultOptions, {
-            id: COSTANTS.MODULE_ID,
-            title: game.i18n.localize("npc-generator-gpt.enhance.title"),
-            template: `modules/${COSTANTS.MODULE_ID}/templates/${COSTANTS.TEMPLATE.ENHANCE}`,
+            id: CONSTANTS.MODULE_ID,
+            title: game.i18n.localize("npc-generator-byo-llm.enhance.title"),
+            template: `modules/${CONSTANTS.MODULE_ID}/templates/${CONSTANTS.TEMPLATE.ENHANCE}`,
             width: 300,
             height: 170
         });
@@ -38,12 +38,12 @@ export class npcGenGPTEnhanceNPC extends Application {
 
     async initEnhancing() {
         if (isRequesting) {
-            ui.notifications.warn(`${COSTANTS.LOG_PREFIX} ${game.i18n.localize("npc-generator-gpt.status.wait")}`);
+            ui.notifications.warn(`${CONSTANTS.LOG_PREFIX} ${game.i18n.localize("npc-generator-byo-llm.status.wait")}`);
             return;
         }
 
         const button = this.element.find('#npcGenGPT_enhance-btn');
-        button.text(game.i18n.localize("npc-generator-gpt.dialog.buttonPending"));
+        button.text(game.i18n.localize("npc-generator-byo-llm.dialog.buttonPending"));
 
         const isBackgroundChecked = this.element.find('#background').prop('checked');
         const selectedCR = this.element.find('#cr').val();
@@ -56,7 +56,7 @@ export class npcGenGPTEnhanceNPC extends Application {
             this.data.npcData = this.initEnhanceNPC(selectedCR);
         }
 
-        button.text(game.i18n.localize("npc-generator-gpt.enhance.button"));
+        button.text(game.i18n.localize("npc-generator-byo-llm.enhance.button"));
         if (this.data.gptData || this.data.npcData) this.updateNPC();
     }
 
@@ -82,16 +82,16 @@ export class npcGenGPTEnhanceNPC extends Application {
         try {
             const npcData = (this.data.npcData) ? this.data.npcData : { details: { biography: {} } };
             if (this.data.gptData) {
-                npcData.details.biography.value = await npcGenGPTLib.getTemplateStructure(COSTANTS.TEMPLATE.ENHANCESHEET, this.data.gptData);
+                npcData.details.biography.value = await npcGenGPTLib.getTemplateStructure(CONSTANTS.TEMPLATE.ENHANCESHEET, this.data.gptData);
             }
 
             await this.npc.update({ system: npcData });
             this.close();
 
-            ui.notifications.info(`${COSTANTS.LOG_PREFIX} ${game.i18n.format("npc-generator-gpt.status.enhance", { npcName: this.npc.name })}`);
+            ui.notifications.info(`${CONSTANTS.LOG_PREFIX} ${game.i18n.format("npc-generator-byo-llm.status.enhance", { npcName: this.npc.name })}`);
         } catch (error) {
-            console.error(`${COSTANTS.LOG_PREFIX} Error during NPC Update:`, error);
-            ui.notifications.error(`${COSTANTS.LOG_PREFIX} ${game.i18n.localize("npc-generator-gpt.status.error3")}`);
+            console.error(`${CONSTANTS.LOG_PREFIX} Error during NPC Update:`, error);
+            ui.notifications.error(`${CONSTANTS.LOG_PREFIX} ${game.i18n.localize("npc-generator-byo-llm.status.error3")}`);
         }
     }
 
