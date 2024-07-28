@@ -58,7 +58,7 @@ export class npcGenBYOLLMSettings {
 		game.settings.register(CONSTANTS.MODULE_ID, "apiURL", {
 			name: game.i18n.localize("npc-generator-byo-llm.settings.apiURL.name"),
 			hint: game.i18n.localize("npc-generator-byo-llm.settings.apiURL.hint"),
-			scope: "client",
+			scope: "world",
 			config: true,
 			default: '',
 			type: String
@@ -66,7 +66,7 @@ export class npcGenBYOLLMSettings {
 		game.settings.register(CONSTANTS.MODULE_ID, "apiKey", {
 			name: game.i18n.localize("npc-generator-byo-llm.settings.apiKey.name"),
 			hint: game.i18n.localize("npc-generator-byo-llm.settings.apiKey.hint"),
-			scope: "client",
+			scope: "client", // Keep as client so it doesn't get shared with other users
 			config: true,
 			default: '',
 			type: String
@@ -74,7 +74,7 @@ export class npcGenBYOLLMSettings {
 		game.settings.register(CONSTANTS.MODULE_ID, "model", {
 			name: game.i18n.localize("npc-generator-byo-llm.settings.model.name"),
 			hint: game.i18n.localize("npc-generator-byo-llm.settings.model.hint"),
-			scope: "client",
+			scope: "world",
 			config: true,
 			default: '',
 			type: String
