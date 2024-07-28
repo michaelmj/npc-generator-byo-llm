@@ -21,9 +21,17 @@
             "name": "Item and Spell Search Threshold",
             "hint": "At what point does the match algorithm give up. A threshold of 0.0 requires a perfect match (of both letters and location), a threshold of 1.0 would match anything."
         },
+        "apiURL": {
+            "name": "API URL",
+            "hint": "The URL you would like to use for the LLM. i.e. http://somemachine:11434/v1/chat/completions"
+        },
         "apiKey": {
             "name": "API Key",
             "hint": "Your private OpenAI API key. [https://platform.openai.com/account/api-keys]"
+        },
+        "model": {
+            "name": "Model",
+            "hint": "The model that you wish to use for the LLM. i.e. gpt-3.5-turbo, llama3.1, gpt-4o-mini"
         },
         "temperature": {
             "name": "Temperature",
@@ -59,7 +67,8 @@
         "gender": {
             "label": "Gender",
             "male": "Male",
-            "female": "Female"
+            "female": "Female",
+            "nonbinary": "Nonbinary"
         },
         "race": {
             "label": "Race",

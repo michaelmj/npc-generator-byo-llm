@@ -1,7 +1,7 @@
 export class npcGenBYOLLMDataStructure {
     static categoryList = ['type', 'gender', 'race', 'subtype', 'alignment', 'cr'];
     static typeList = ['commoner', 'npc'];
-    static genderList = ['male', 'female'];
+    static genderList = ['male', 'female', 'nonbinary'];
     static raceList = [
         'dragonborn',
         'dwarf-common', 'dwarf-hill', 'dwarf-mountain',
