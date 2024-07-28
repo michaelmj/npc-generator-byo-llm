@@ -9,7 +9,7 @@ export class npcGenBYOLLMEnhanceNPC extends Application {
     }
 
     static get defaultOptions() {
-        return mergeObject(super.defaultOptions, {
+        return foundry.utils.mergeObject(super.defaultOptions, {
             id: CONSTANTS.MODULE_ID,
             title: game.i18n.localize("npc-generator-byo-llm.enhance.title"),
             template: `modules/${CONSTANTS.MODULE_ID}/templates/${CONSTANTS.TEMPLATE.ENHANCE}`,
