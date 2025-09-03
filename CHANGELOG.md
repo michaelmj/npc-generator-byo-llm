@@ -1,5 +1,12 @@
 # NPC Generator (GPT) Changelog
 
+## v1.0.2
+* Added Azure OpenAI support alongside existing OpenAI functionality
+* Added Authentication Type setting to choose between OpenAI (Bearer Token) and Azure OpenAI (API Key Header)
+* Added API Version setting for Azure OpenAI configurations
+* Updated documentation to include setup instructions for both OpenAI and Azure OpenAI
+* Maintained full backward compatibility with existing OpenAI configurations
+
 ## v1.5.5
 * Added optional name input
 
