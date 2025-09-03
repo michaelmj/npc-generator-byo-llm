@@ -20,11 +20,20 @@ export class npcGenBYOLLMLib {
         isRequesting = true;
 
         const requestConfig = this.getRequestConfig(content);
+        let apiURL = game.settings.get(CONSTANTS.MODULE_ID, "apiURL");
+        
+        // For Azure OpenAI, append api-version query parameter if not already present
+        const authType = game.settings.get(CONSTANTS.MODULE_ID, "authType");
+        if (authType === "azure" && !apiURL.includes("api-version=")) {
+            const apiVersion = game.settings.get(CONSTANTS.MODULE_ID, "apiVersion");
+            const separator = apiURL.includes("?") ? "&" : "?";
+            apiURL += `${separator}api-version=${apiVersion}`;
+        }
 
         console.log(`${CONSTANTS.LOG_PREFIX} Sending Request`);
 
         try {
-            const response = await fetch(game.settings.get(CONSTANTS.MODULE_ID, "apiURL"), requestConfig);
+            const response = await fetch(apiURL, requestConfig);
             const responseData = await response.json();
 
             if (!response.ok) {
@@ -46,6 +55,19 @@ export class npcGenBYOLLMLib {
     }
 
     static getRequestConfig(content) {
+        const authType = game.settings.get(CONSTANTS.MODULE_ID, "authType");
+        const headers = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        };
+
+        // Set authentication header based on auth type
+        if (authType === "azure") {
+            headers['api-key'] = game.settings.get(CONSTANTS.MODULE_ID, "apiKey");
+        } else {
+            headers['Authorization'] = `Bearer ${game.settings.get(CONSTANTS.MODULE_ID, "apiKey")}`;
+        }
+
         return {
             method: "POST",
             body: JSON.stringify({
@@ -61,11 +83,7 @@ export class npcGenBYOLLMLib {
                 "frequency_penalty": game.settings.get(CONSTANTS.MODULE_ID, "freq_penality"),
                 "presence_penalty": game.settings.get(CONSTANTS.MODULE_ID, "pres_penality")
             }),
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${game.settings.get(CONSTANTS.MODULE_ID, "apiKey")}`
-            }
+            headers: headers
         };
     }
 

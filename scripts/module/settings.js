@@ -131,6 +131,26 @@ export class npcGenBYOLLMSettings {
 				step: 0.01,
 			}
 		});
+		game.settings.register(CONSTANTS.MODULE_ID, "authType", {
+			name: game.i18n.localize("npc-generator-byo-llm.settings.authType.name"),
+			hint: game.i18n.localize("npc-generator-byo-llm.settings.authType.hint"),
+			scope: "world",
+			config: true,
+			default: "openai",
+			type: String,
+			choices: {
+				"openai": "OpenAI (Bearer Token)",
+				"azure": "Azure OpenAI (API Key Header)"
+			}
+		});
+		game.settings.register(CONSTANTS.MODULE_ID, "apiVersion", {
+			name: game.i18n.localize("npc-generator-byo-llm.settings.apiVersion.name"),
+			hint: game.i18n.localize("npc-generator-byo-llm.settings.apiVersion.hint"),
+			scope: "world",
+			config: true,
+			default: "2024-02-15-preview",
+			type: String
+		});
 	}
 
 	_getCompendiumList() {
