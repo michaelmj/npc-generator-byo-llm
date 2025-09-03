@@ -23,11 +23,19 @@
         },
         "apiURL": {
             "name": "API URL",
-            "hint": "The URL you would like to use for the LLM. i.e. http://somemachine:11434/v1/chat/completions"
+            "hint": "The URL for your LLM API. For OpenAI: https://api.openai.com/v1/chat/completions. For Azure OpenAI: https://your-resource-name.openai.azure.com/openai/deployments/your-deployment-name/chat/completions"
         },
         "apiKey": {
             "name": "API Key",
-            "hint": "Your private OpenAI API key. [https://platform.openai.com/account/api-keys]"
+            "hint": "Your API key. For OpenAI: Get from https://platform.openai.com/account/api-keys. For Azure OpenAI: Get from Azure portal."
+        },
+        "authType": {
+            "name": "Authentication Type",
+            "hint": "Choose the authentication method: OpenAI uses Bearer token, Azure OpenAI uses API key header."
+        },
+        "apiVersion": {
+            "name": "API Version",
+            "hint": "API version for Azure OpenAI (e.g., 2024-02-15-preview). Only used when Authentication Type is set to Azure OpenAI."
         },
         "model": {
             "name": "Model",
@@ -162,7 +170,7 @@
         "error": "Request Denied! Wait a few seconds and try again. (See console (F12) for more details)",
         "error2": "Error processing ChatGPT's response! Try again.",
         "error3": "Error creating the NPC! Try again.",
-        "error4": "You do not have any credit in your OpenAI account. Please visit https://platform.openai.com/account/billing/overview",
+        "error4": "You do not have sufficient credit in your account. For OpenAI, visit https://platform.openai.com/account/billing/overview. For Azure OpenAI, check your Azure subscription billing.",
         "wait": "Please wait. A request is already being processed."
     },
     "npc-generator-byo-llm.query": {
